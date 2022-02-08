@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const shopSchema = mongoose.Schema({
+  username: { type: String, required: true},
   parlorName: { type: String, required: true },
   managerLastName: { type: String, required: true },
   managerName: { type: String, required: true },

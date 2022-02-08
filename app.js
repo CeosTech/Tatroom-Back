@@ -19,9 +19,10 @@ app.use("/shops", shopsRoute);
 
 //Connecting to DB
 mongoose.connect(process.env.DB_CONNECTION, () =>
-  console.log("connected to DB")
-);
+  console.log("connected to DB", )
+)
 
 //Listening to server
 app.listen(3000);
+console.log("Server start running on port: 3000");
 
