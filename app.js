@@ -18,11 +18,30 @@ app.use("/shops", shopsRoute);
 
 
 //Connecting to DB
-mongoose.connect(process.env.DB_CONNECTION, () =>
-  console.log("connected to DB", )
-)
+async function connectDB() {
+  await mongoose.connect(process.env.DB_TEST)
+  .then((res) => {
+    console.log("Connected to MongoDB !")
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+}
+
+// Disconnect from the DB
+async function disconnectDB(){
+  await mongoose.connection.close()
+  .then((res) => {
+    console.log("Disconnected from MongoDB !")
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+}
+
 
 //Listening to server
 app.listen(3000);
-console.log("Server start running on port: 3000");
+//connectDB()
+console.log("Server listening at port: 3000");
 
