@@ -12,9 +12,9 @@ const shopSchema = mongoose.Schema({
   zipcode: { type: Number, required: true },
   city: { type: String, required: true },
   password: { type: String, required: true },
-//   profilePic:
-//   gallery:
-//   styles:
+  profilePic: { type: String, required: true },
+  gallery: { type: [], required: true },
+  styles: { type: [], required: false}
 });
 
 module.exports = mongoose.model("Shops", shopSchema);
