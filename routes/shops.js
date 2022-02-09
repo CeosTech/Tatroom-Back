@@ -55,6 +55,7 @@ router.post("/", async (req, res) => {
       phone: req.body.phone,
       address: req.body.address,
       zipcode: req.body.zipcode,
+      profilePic: req.body.profilePic,
       city: req.body.city,
       password: password,
     });

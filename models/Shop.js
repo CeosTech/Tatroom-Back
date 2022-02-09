@@ -12,8 +12,8 @@ const shopSchema = mongoose.Schema({
   zipcode: { type: Number, required: true },
   city: { type: String, required: true },
   password: { type: String, required: true },
-  profilePic: { type: String, required: true },
-  gallery: { type: [], required: true },
+  profilePic: { type: String, required: false },
+  gallery: { type: [], required: false },
   styles: { type: [], required: false}
 });
 
