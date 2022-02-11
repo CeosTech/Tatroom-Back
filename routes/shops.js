@@ -83,21 +83,6 @@ router.post("/", async (req, res) => {
 
 // //Retrieves all shops
 router.get("/", async (req, res) => {
-<<<<<<< HEAD
-  console.log("===== GET SHOPS ===========");
-  await connectDB() .then(async ()=>{
-    const shops = await Shop.find().then(async (res)=>{
-      console.log("=============SUCCESS=============")
-      console.log(res)
-      res.status(200).json(res);
-      disconnectDB()
-      return;
-    }).catch((err)=>{
-      console.log(err.response)
-    });
-  })
-  //res.status(200).json();
-=======
   await connectDB().then(async () => {
     try {
       const shops = await Shop.find().then((result) => {
@@ -110,21 +95,10 @@ router.get("/", async (req, res) => {
       return;
     }
   });
->>>>>>> 14e79065d4ee1844e022e90ad7640720a400ba55
 });
 
 //Retrieves specific shop
 router.get("/:shopId", async (req, res) => {
-<<<<<<< HEAD
-  console.log("============SHOP ID=======")
-  await connectDB().then(async () => {
-    try {
-      const shop = await Shop.findById(req.params.shopId);
-      res.json(shop);
-      return;
-    } catch (err) {
-      res.json({ message: err });
-=======
   await connectDB().then(async () => {
     try {
       const shop = await Shop.findById(req.params.shopId).then((result) => {
@@ -152,7 +126,6 @@ router.get("/city/:shopCity/", async (req, res) => {
       return;
     } catch (err) {
       res.status(400).json({ message: err });
->>>>>>> 14e79065d4ee1844e022e90ad7640720a400ba55
       return;
     }
   });
