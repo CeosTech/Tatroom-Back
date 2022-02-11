@@ -4,9 +4,11 @@ const bcrypt = require("bcrypt"); // In order to hash the password
 const jwt = require("jsonwebtoken"); // Token for JWT
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const { ObjectId } = require("mongodb");
 
 const router = express.Router();
 const Shop = require("../models/Shop");
+const { read } = require("fs");
 
 // ====================
 // get config vars from .env
@@ -61,9 +63,11 @@ router.post("/", async (req, res) => {
       profilePic: req.body.profilePic,
       city: req.body.city,
       password: password,
+      gallery: req.body.gallery,
+      styles: req.body.styles,
     });
     try {
-      //Save the object
+      //Saves the object
       const savedShop = await shop.save().then((result) => {
         disconnectDB();
       });
@@ -77,8 +81,9 @@ router.post("/", async (req, res) => {
   });
 });
 
-//Retrieves all shops
+// //Retrieves all shops
 router.get("/", async (req, res) => {
+<<<<<<< HEAD
   console.log("===== GET SHOPS ===========");
   await connectDB() .then(async ()=>{
     const shops = await Shop.find().then(async (res)=>{
@@ -92,10 +97,25 @@ router.get("/", async (req, res) => {
     });
   })
   //res.status(200).json();
+=======
+  await connectDB().then(async () => {
+    try {
+      const shops = await Shop.find().then((result) => {
+        disconnectDB();
+        return result;
+      });
+      res.status(200).json(shops);
+    } catch (err) {
+      res.status(400).json({ message: err });
+      return;
+    }
+  });
+>>>>>>> 14e79065d4ee1844e022e90ad7640720a400ba55
 });
 
 //Retrieves specific shop
 router.get("/:shopId", async (req, res) => {
+<<<<<<< HEAD
   console.log("============SHOP ID=======")
   await connectDB().then(async () => {
     try {
@@ -104,6 +124,35 @@ router.get("/:shopId", async (req, res) => {
       return;
     } catch (err) {
       res.json({ message: err });
+=======
+  await connectDB().then(async () => {
+    try {
+      const shop = await Shop.findById(req.params.shopId).then((result) => {
+        disconnectDB();
+        return result;
+      });
+      res.status(200).json(shop);
+      return;
+    } catch (err) {
+      res.status(400).json({ message: err });
+      return;
+    }
+  });
+});
+
+//Retrieves shop by city
+router.get("/city/:shopCity/", async (req, res) => {
+  await connectDB().then(async () => {
+    try {
+      const shop = await Shop.find({city : req.params.shopCity}).then((result) => {
+        disconnectDB();
+        return result;
+      });
+      res.status(200).json(shop);
+      return;
+    } catch (err) {
+      res.status(400).json({ message: err });
+>>>>>>> 14e79065d4ee1844e022e90ad7640720a400ba55
       return;
     }
   });
@@ -111,25 +160,52 @@ router.get("/:shopId", async (req, res) => {
 
 //Deletes specific shop
 router.delete("/:shopId", async (req, res) => {
-  try {
-    const removedShop = await Shop.remove({ _id: req.params.shopId });
-    res.json(removedShop);
-  } catch (err) {
-    res.json({ message: err });
-  }
+  await connectDB().then(async () => {
+    try {
+      const removedShop = await Shop.remove({ _id: req.params.shopId }).then(
+        (result) => {
+          disconnectDB();
+          return result;
+        }
+      );
+      res.status(200).json(removedShop);
+      return;
+    } catch (err) {
+      res.status(400).json({ message: err });
+      return;
+    }
+  });
 });
 
 //Updates specific shop
-router.patch("/:shopId", async (req, res) => {
-  try {
-    const updatedShop = await Shop.updateOne(
-      { _id: req.params.shopId },
-      { $set: { name: req.body.name } }
-    );
-    res.json({ updatedShop });
-  } catch (err) {
-    res.json({ message: err });
-  }
+router.put("/:shopId", async (req, res) => {
+  const id = new ObjectId(req.params.shopId);
+  await connectDB().then(async () => {
+    try {
+      const updatedShop = Shop.findByIdAndUpdate(
+        req.params.shopId,
+        req.body,
+        function (err, docs) {
+          if (err) {
+            console.log(err);
+            res.status(400).json({ updatedShop });
+            return;
+          } else {
+            console.log("Updated User : ", docs);
+            res.status(200).json({ docs});
+            disconnectDB()
+            return;
+          }
+          
+        }
+      );
+      //res.status(200).json({ updatedShop });
+      return;
+    } catch (err) {
+      res.status(400).json({ message: err });
+      return;
+    }
+  });
 });
 
 //================= AUTHENTICATION ====================
@@ -225,9 +301,7 @@ router.post("/verify-token", (req, res) => {
   const token = authHeader.token;
   console.log(token);
   if (token !== undefined && token !== null && token !== "") {
-    const verif = verifyToken(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiQ2Vvc1RlY2giLCJpYXQiOjE2NDQ0MTg1MDcsImV4cCI6MTY0NDUwNDkwN30.DglwEvSzDl9YRQhPippmhkafQUecyomTCabqz-smm-s"
-    );
+    const verif = verifyToken(token);
     if (verif.verify) {
       res.status(200).json({ conn: true, data: verif.data });
       return;

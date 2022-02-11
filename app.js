@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 //Import Routes
 const usersRoute = require("./routes/users");
-const shopsRoute = require("./routes/shops")
+const shopsRoute = require("./routes/shops");
 
 app.use("/users", usersRoute)
 app.use("/shops", shopsRoute);
