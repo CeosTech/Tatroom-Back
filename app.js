@@ -16,6 +16,8 @@ const shopsRoute = require("./routes/shops")
 app.use("/users", usersRoute)
 app.use("/shops", shopsRoute);
 
+PORT = 3001
+
 
 //Connecting to DB
 async function connectDB() {
@@ -41,7 +43,7 @@ async function disconnectDB(){
 
 
 //Listening to server
-app.listen(3000);
+app.listen(PORT);
 //connectDB()
-console.log("Server listening at port: 3000");
+console.log("Server listening at port: " + PORT);
 

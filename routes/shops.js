@@ -20,11 +20,12 @@ TOKEN_SECRET = process.env.TOKEN_SECRET; // OUR SECRET KEY
 //Connecting to DB
 async function connectDB() {
   await mongoose
-    .connect(process.env.DB_TEST)
+    .connect(process.env.DB_CONNECTION)
     .then((res) => {
       console.log("Connected to MongoDB !");
     })
     .catch((err) => {
+      console.log("ERREUR CONNEXION");
       console.log(err);
     });
 }
@@ -78,22 +79,34 @@ router.post("/", async (req, res) => {
 
 //Retrieves all shops
 router.get("/", async (req, res) => {
-  try {
-    const shops = await Shop.find();
-    res.json(shops);
-  } catch (err) {
-    res.json({ message: err });
-  }
+  console.log("===== GET SHOPS ===========");
+  await connectDB() .then(async ()=>{
+    const shops = await Shop.find().then(async (res)=>{
+      console.log("=============SUCCESS=============")
+      console.log(res)
+      res.status(200).json(res);
+      disconnectDB()
+      return;
+    }).catch((err)=>{
+      console.log(err.response)
+    });
+  })
+  //res.status(200).json();
 });
 
 //Retrieves specific shop
 router.get("/:shopId", async (req, res) => {
-  try {
-    const shop = await Shop.findById(req.params.shopId);
-    res.json(shop);
-  } catch (err) {
-    res.json({ message: err });
-  }
+  console.log("============SHOP ID=======")
+  await connectDB().then(async () => {
+    try {
+      const shop = await Shop.findById(req.params.shopId);
+      res.json(shop);
+      return;
+    } catch (err) {
+      res.json({ message: err });
+      return;
+    }
+  });
 });
 
 //Deletes specific shop
@@ -222,7 +235,7 @@ router.post("/verify-token", (req, res) => {
     res.status(401).json({ conn: false });
     return;
   }
-  res.status(401).json()
+  res.status(401).json();
 });
 
 module.exports = router;
