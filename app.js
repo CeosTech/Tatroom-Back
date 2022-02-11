@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 //Import Routes
 const usersRoute = require("./routes/users");
-const shopsRoute = require("./routes/shops")
+const shopsRoute = require("./routes/shops");
 
 app.use("/users", usersRoute)
 app.use("/shops", shopsRoute);
@@ -41,7 +41,7 @@ async function disconnectDB(){
 
 
 //Listening to server
-app.listen(3000);
+app.listen(3001);
 //connectDB()
-console.log("Server listening at port: 3000");
+console.log("Server listening at port: 3001");
 
