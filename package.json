@@ -6,9 +6,6 @@
   "scripts": {
     "start": "nodemon app.js"
   },
-  "engines":{
-    "node": "v16.13.1"
-  },
   "author": "younes yousfi",
   "license": "ISC",
   "dependencies": {
